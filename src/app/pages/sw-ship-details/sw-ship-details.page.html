@@ -1,0 +1,115 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>sw-ship-spec</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>
+        {{ ship.name}}
+      </ion-card-title>
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="6">
+              Modèle :
+            </ion-col>
+            <ion-col size="6">
+              {{ ship.model}}
+            </ion-col>
+            <ion-col size="6">
+              Fabricant :
+            </ion-col>
+            <ion-col size="6">
+              {{ ship.manufacturer}}
+            </ion-col>
+            <ion-col size="6">
+              Prix :
+            </ion-col>
+            <ion-col size="6">
+              {{ ship.cost_in_credits}}
+            </ion-col>
+            <ion-col size="6">
+              Longueur :
+            </ion-col>
+            <ion-col size="6">
+              {{ ship.length}}
+            </ion-col>  
+            <ion-col size="6">
+              Vitesse :
+            </ion-col>
+            <ion-col size="6">
+              {{ ship.max_atmosphering_speed}}
+            </ion-col>  
+            <ion-col size="6">
+              Equipage :
+            </ion-col>
+            <ion-col size="6">
+              {{ ship.crew}}
+            </ion-col>  
+            <ion-col size="6">
+              Passagers :
+            </ion-col>
+            <ion-col size="6">
+              {{ ship.passengers}}
+            </ion-col>  
+            <ion-col size="6">
+              Capacité :
+            </ion-col>
+            <ion-col size="6">
+              {{ ship.cargo_capacity}}
+            </ion-col>     
+            <ion-col size="6">
+              Consommables:
+            </ion-col>
+            <ion-col size="6">
+              {{ ship.consumables}}
+            </ion-col>
+            <ion-col size="6">
+              Hyperdrive :
+            </ion-col>
+            <ion-col size="6">
+              {{ ship.hyperdrive_rating}}
+            </ion-col>
+            <ion-col size="6">
+              Capacité :
+            </ion-col>
+            <ion-col size="6">
+              {{ ship.cargo_capacity}}
+            </ion-col>   
+            <ion-col size="6">
+              Classe :
+            </ion-col>
+            <ion-col size="6">
+              {{ ship.starship_class}}
+            </ion-col>        
+          </ion-row>       
+         </ion-grid>    
+      </ion-card-content>
+    </ion-card-header>
+  </ion-card>
+  <ion-list>
+    <ion-label>Films</ion-label>
+    <ion-item *ngFor="let film of ship.films">
+      <ion-label>
+        <h4>{{ film.title }}</h4>
+        <p>sorti le : {{ getDate(film.release_date) | date: 'd M y'}}</p>
+      </ion-label>
+      <ion-chip slot="end">
+        {{ film.episode_id }}
+      </ion-chip>
+    </ion-item>
+  </ion-list>
+  <ion-label>Pilotes:</ion-label>
+  <ion-list>
+    <ion-item *ngFor="let pilots of ship.pilots">
+      <ion-label>
+        <h4>{{ pilots.name }}</h4>              
+      </ion-label>                     
+    </ion-item>
+  </ion-list>
+</ion-content>

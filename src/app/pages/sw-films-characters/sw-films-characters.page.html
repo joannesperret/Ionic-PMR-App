@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>sw-films-persos</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>
+        {{ film.title}}
+      </ion-card-title>
+      <ion-card-content> 
+        <ion-list>
+          <ion-label>Personnages</ion-label>
+          <ion-item *ngFor="let personnage of film.personnages">
+            <ion-label>
+              <h4>{{ personnage.name }}</h4>                      
+            </ion-label>            
+          </ion-item>
+        </ion-list> 
+      </ion-card-content>
+    </ion-card-header>
+  </ion-card>
+</ion-content>

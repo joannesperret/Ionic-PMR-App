@@ -1,0 +1,61 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Liste des utilisateurs</ion-title>
+  </ion-toolbar>
+
+  <ion-toolbar>
+    <ion-button (click)="loadUsers(null)">Plus d'utilisateurs</ion-button>
+  </ion-toolbar>
+</ion-header>
+<ion-toolbar>
+  
+  <ion-item>
+    <ion-label>Nombre d'utilisateurs</ion-label>
+    <ion-input type='number' [(ngModel)]="numberOfUserPerRequest"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Nationnalité</ion-label>
+    <ion-select [(ngModel)]="natPerRequest">
+      <ion-select-option value="fr">Française</ion-select-option>
+      <ion-select-option value="de">Allemande</ion-select-option>
+      <ion-select-option value="dk">Danoise</ion-select-option>
+      <ion-select-option value="es">Espagnole</ion-select-option>
+      <ion-select-option value="us">Américaine</ion-select-option>      
+    </ion-select>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Genre</ion-label>
+    <ion-select [(ngModel)]="genderPerRequest">
+      <ion-select-option value="female">Femme</ion-select-option>
+      <ion-select-option value="male">Homme</ion-select-option>      
+    </ion-select>
+  </ion-item>  
+
+</ion-toolbar>
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let user of userList; let pos=index">
+
+      <ion-avatar slot="start">
+        <ion-img src="{{user.picture.large}}"></ion-img>
+      </ion-avatar>
+      <ion-label>
+        <h3>{{user.name.first+" "+user.name.last +" "+ user.nat}}</h3>
+      </ion-label>
+      <ion-reorder slot="end"></ion-reorder>
+    </ion-item>
+
+  </ion-list>
+  <ion-infinite-scroll (ionInfinite)="loadUsers($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+
+</ion-content>

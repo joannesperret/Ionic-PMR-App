@@ -1,0 +1,65 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>sw-details</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>
+        {{ character.name}}
+      </ion-card-title>
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="6">
+              Taille :
+            </ion-col>
+            <ion-col size="6">
+              {{ character.height}} cm
+            </ion-col>
+            <ion-col size="6">
+              Poids :
+            </ion-col>
+            <ion-col size="6">
+              {{ character.mass}} kg
+            </ion-col>
+            <ion-col size="6">
+              Yeux :
+            </ion-col>
+            <ion-col size="6">
+              {{ character.eye_color}}
+            </ion-col>
+            <ion-col size="6">
+              Cheveux :
+            </ion-col>
+            <ion-col size="6">
+              {{ character.hair_color}}
+            </ion-col>  
+            <ion-col size="6">
+              Planete :
+            </ion-col>
+            <ion-col size="6">
+              {{ character.planete}}
+            </ion-col>          
+          </ion-row>
+        </ion-grid>
+        
+      </ion-card-content>
+    </ion-card-header>
+  </ion-card>
+  <ion-list>
+    <ion-item *ngFor="let film of character.films">
+      <ion-label>
+        <h4>{{ film.title }}</h4>
+        <p>sorti le : {{ getDate(film.release_date) | date: 'd M y'}}</p>
+      </ion-label>
+      <ion-chip slot="end">
+        {{ film.episode_id }}
+      </ion-chip>
+    </ion-item>
+  </ion-list>
+</ion-content>

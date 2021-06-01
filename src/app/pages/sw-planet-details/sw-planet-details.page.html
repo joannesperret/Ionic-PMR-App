@@ -1,0 +1,92 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>sw-planet-spec</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>
+        {{ planet.name}}
+      </ion-card-title>
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="6">
+              Rotation :
+            </ion-col>
+            <ion-col size="6">
+              {{ planet.rotation_period}}
+            </ion-col>
+            <ion-col size="6">
+              Orbite :
+            </ion-col>
+            <ion-col size="6">
+              {{ planet.orbital_period}}
+            </ion-col>
+            <ion-col size="6">
+              Diamètre :
+            </ion-col>
+            <ion-col size="6">
+              {{ planet.diameter}}
+            </ion-col>
+            <ion-col size="6">
+              Climat :
+            </ion-col>
+            <ion-col size="6">
+              {{ planet.climate}}
+            </ion-col>  
+            <ion-col size="6">
+              Gravitée :
+            </ion-col>
+            <ion-col size="6">
+              {{ planet.gravity}}
+            </ion-col>  
+            <ion-col size="6">
+              Terrain :
+            </ion-col>
+            <ion-col size="6">
+              {{ planet.terrain}}
+            </ion-col>  
+            <ion-col size="6">
+              Etendue d'eau :
+            </ion-col>
+            <ion-col size="6">
+              {{ planet.surface_water}}
+            </ion-col>  
+            <ion-col size="6">
+              Population :
+            </ion-col>
+            <ion-col size="6">
+              {{ planet.population}}
+            </ion-col>         
+          </ion-row>       
+         </ion-grid>       
+      </ion-card-content>
+    </ion-card-header>
+  </ion-card>
+  <ion-list>
+    <ion-label>Films</ion-label>
+    <ion-item *ngFor="let film of planet.films">
+      <ion-label>
+        <h4>{{ film.title }}</h4>
+        <p>sorti le : {{ getDate(film.release_date) | date: 'd M y'}}</p>
+      </ion-label>
+      <ion-chip slot="end">
+        {{ film.episode_id }}
+      </ion-chip>
+    </ion-item>
+  </ion-list>
+  <ion-label>Habitants:</ion-label>
+  <ion-list>
+    <ion-item *ngFor="let resident of planet.residents">
+      <ion-label>
+        <h4>{{ resident.name }}</h4>              
+      </ion-label>                     
+    </ion-item>
+  </ion-list>
+</ion-content>
+
