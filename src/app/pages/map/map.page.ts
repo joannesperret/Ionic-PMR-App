@@ -24,11 +24,10 @@ export class MapPage implements OnInit {
 
   public coords = [];
   constructor(private geolocation: Geolocation, private http: HttpClient) {
-
   }
 
   ngOnInit(): void {
-    // Fonction d'appel de l' API de geolocalisation des emplacements PMR à Roubaix
+    // Fonction d'appel de l' API de geolocalisation des emplacements PMR de Lille
     this.loadPmrRoubaix(this.UrlPmrLille);
     //.then( toast => toast.present());
     // Correction trouvée sur GitHub
@@ -91,7 +90,7 @@ export class MapPage implements OnInit {
         this.coords = [];
         this.coords.push(geoposition.coords.latitude);
         this.coords.push(geoposition.coords.longitude);
-        this.map.setView(this.coords);
+        // this.map.setView(this.coords, 16);
         console.log('coords watch' + this.coords);
         tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(this.map);
       } else {
@@ -113,7 +112,7 @@ export class MapPage implements OnInit {
     // setTimeout(this.ionViewDidEnter, 5000);
     // Ajout du marqueur de position à l'instanciation de la carte
 
-    circle(coords, { color: 'blue', radius: 10 }).addTo(this.map).bindPopup('<p>Vous êtes ici!</p>');
+    // circle(coords, { color: 'blue', radius: 10 }).addTo(this.map).bindPopup('<p>Vous êtes ici!</p>');
 
     // Ajout d'un marqueur test dans le jardin
 
@@ -150,3 +149,4 @@ export class MapPage implements OnInit {
     });
   }
 }
+
