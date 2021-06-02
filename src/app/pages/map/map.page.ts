@@ -76,13 +76,13 @@ export class MapPage implements OnInit {
   }
 
   public ionViewDidEnter() {
-    this.geolocation.getCurrentPosition()
-      .then(response => {
-        this.coords = [response.coords.latitude, response.coords.longitude];
-        console.log('Position: ' + [response.coords.latitude, response.coords.longitude]);
-      }).catch((error) => {
-        console.log('Error getting location', error);
-      });
+    // this.geolocation.getCurrentPosition()
+    //   .then(response => {
+    //     this.coords = [response.coords.latitude, response.coords.longitude];
+    //     console.log('Position: ' + [response.coords.latitude, response.coords.longitude]);
+    //   }).catch((error) => {
+    //     console.log('Error getting location', error);
+    //   });
     this.geolocation.watchPosition().subscribe(position => {
       if ((position as Geoposition).coords !== undefined) {
         const geoposition = (position as Geoposition);
@@ -90,7 +90,9 @@ export class MapPage implements OnInit {
         this.coords = [];
         this.coords.push(geoposition.coords.latitude);
         this.coords.push(geoposition.coords.longitude);
-        // this.map.setView(this.coords, 16);
+        //this.map.setView(this.coords, 16);
+        console.log('initMap');
+        this.initMap;
         console.log('coords watch' + this.coords);
         tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(this.map);
       } else {
@@ -112,7 +114,7 @@ export class MapPage implements OnInit {
     // setTimeout(this.ionViewDidEnter, 5000);
     // Ajout du marqueur de position à l'instanciation de la carte
 
-    // circle(coords, { color: 'blue', radius: 10 }).addTo(this.map).bindPopup('<p>Vous êtes ici!</p>');
+    circle(coords, { color: 'blue', radius: 10 }).addTo(this.map).bindPopup('<p>Vous êtes ici!</p>');
 
     // Ajout d'un marqueur test dans le jardin
 
@@ -137,11 +139,16 @@ export class MapPage implements OnInit {
         this.coords = [];
         this.coords.push(geoposition.coords.latitude);
         this.coords.push(geoposition.coords.longitude);
-        this.map.setView(coords);
+        coords = [];
+        coords = this.coords;
+        // this.initMap;
+        console.log('setView'+coords);
+        this.map.setView(coords,16);        
         console.log('coords watch' + this.coords);
         // Ajout d'un marqueur sur la nouvelle position
-        circle(coords, { color: 'blue', radius: 5 }).addTo(this.map);
-        tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(this.map);
+        circle(coords, { color: 'green', radius: 5 }).addTo(this.map);
+        tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(this.map);        
+       // circle(coords, { color: 'red', radius: 10 }).addTo(this.map);
       } else {
         const GeolocationPositionError = (position as PositionError);
         console.log('Error ' + GeolocationPositionError.code + ': ' + GeolocationPositionError.message);
