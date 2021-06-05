@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Map, tileLayer, marker, circle } from 'leaflet';
 import { Geolocation, Geoposition, PositionError } from '@ionic-native/geolocation/ngx';
 import { HttpClient } from '@angular/common/http';
+import { Subscription } from 'rxjs';
+import { now } from 'jquery';
 
 @Component({
   selector: 'app-map',
@@ -10,7 +12,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class MapPage implements OnInit {
 
-  private map: Map;
+  public map: Map;
   public pmrRoubaix = { emplacements: [] };
   public pmrList = {};
   public pmrLocalisation = [];
@@ -23,12 +25,12 @@ export class MapPage implements OnInit {
   public UrlPmrLille = 'https://opendata.lillemetropole.fr/api/records/1.0/search/?dataset=stationnements-reserves-a-lille&q=&rows=1574';
 
   public coords = [];
-  constructor(private geolocation: Geolocation, private http: HttpClient) {
+  constructor(public geolocation: Geolocation, public http: HttpClient) {
   }
 
   ngOnInit(): void {
     // Fonction d'appel de l' API de geolocalisation des emplacements PMR de Lille
-    this.loadPmrRoubaix(this.UrlPmrLille);
+    this.loadPmrPark(this.UrlPmrLille);
     //.then( toast => toast.present());
     // Correction trouvée sur GitHub
     // To stop notifications
@@ -37,14 +39,12 @@ export class MapPage implements OnInit {
     //  setTimeout(this.ionViewDidEnter, 5000);
   }
 
-  // Désabonnement lors de la fermeture de l'application
-  ngOnDestroy() {
-    
-  }
 
-  // Fonction d' appel à l' API pour ajout des emplacements PMR Roubaisiens sur la carte
 
-  public loadPmrRoubaix(dataUrl) {
+  // Fonction d' appel à l' API pour ajout des emplacements PMR sur la carte
+  // @param: url API
+
+  public loadPmrPark(dataUrl) {
     // Requête HTTP, la méthode get retourne un observable   
 
     this.http.get(dataUrl)
@@ -83,42 +83,48 @@ export class MapPage implements OnInit {
     //   }).catch((error) => {
     //     console.log('Error getting location', error);
     //   });
-    this.geolocation.watchPosition().subscribe(position => {
+    const souscription = this.geolocation.watchPosition();
+    souscription.subscribe(position => {
       if ((position as Geoposition).coords !== undefined) {
         const geoposition = (position as Geoposition);
-        console.log('Latitude: ' + geoposition.coords.latitude + ' - Longitude: ' + geoposition.coords.longitude);
+        console.log('90 Latitude: ' + geoposition.coords.latitude + ' - Longitude: ' + geoposition.coords.longitude);
         this.coords = [];
         this.coords.push(geoposition.coords.latitude);
         this.coords.push(geoposition.coords.longitude);
         //this.map.setView(this.coords, 16);
-        console.log('initMap');
+        console.log('95 initMap');
         this.initMap;
-        console.log('coords watch' + this.coords);
+        console.log('97 coords watch' + this.coords);
         tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(this.map);
+
       } else {
         const positionError = (position as PositionError);
         console.log('Error ' + positionError.code + ': ' + positionError.message);
       }
     });
-  }
+  }  
+    // Désabonnement lors de la fermeture de l'application
+    ngOnDestroy() {
+  
+    }
 
   initMap(coords) {
     // Instanciation de la carte
     this.map = new Map('mapView');
     // Deuxième paramètre correspond au zoom
-    this.map.setView(coords, 16);
+    this.map.setView(coords, 20);
     tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(this.map);
     // console.log('this coords: '+ this.coords);
-    console.log('coords ' + coords);
+    console.log('114 coords ' + coords);
 
     // setTimeout(this.ionViewDidEnter, 5000);
     // Ajout du marqueur de position à l'instanciation de la carte
 
-    circle(coords, { color: 'blue', radius: 10 }).addTo(this.map).bindPopup('<p>Vous êtes ici!</p>');
+    // circle(coords, { color: 'blue', radius: 10 }).addTo(this.map).bindPopup('<p>Vous êtes ici!</p>');
 
     // Ajout d'un marqueur test dans le jardin
 
-    circle([50.704295, 3.252503], { color: 'green', radius: 2 }).addTo(this.map).bindPopup('<p>Place PMR test!</p>');
+    circle([50.704295, 3.252503], { color: 'blue', radius: 2 }).addTo(this.map).bindPopup('<p>Place PMR test!</p>');
 
 
     // Ajout sur la carte des emplacements PMR de l' API selectionnée
@@ -129,31 +135,34 @@ export class MapPage implements OnInit {
 
     // Fonction de mise à jour de la position
 
-    this.geolocation.watchPosition().subscribe(position => {
+    const subsription = this.geolocation.watchPosition();
+    subsription.subscribe(position => {
       const geoposition = (position as Geoposition);
       if ((position as Geoposition).coords !== undefined) {
-        console.log('Latitude: ' + geoposition.coords.latitude + ' - Longitude: ' + geoposition.coords.longitude);
+        console.log('137 Latitude: ' + geoposition.coords.latitude + ' - Longitude: ' + geoposition.coords.longitude);
         // let oldPosition = this.coords;
-        console.log('geoposition : ' + geoposition);
+        console.log('139 geoposition : ' + geoposition);
         circle(coords).remove();
         this.coords = [];
         this.coords.push(geoposition.coords.latitude);
         this.coords.push(geoposition.coords.longitude);
         coords = [];
-        coords = this.coords;
-        // this.initMap;
-        console.log('setView'+coords);
-        this.map.setView(coords,16);        
-        console.log('coords watch' + this.coords);
+        coords = this.coords;        
+        console.log('setView' + coords);
+        this.map.setView(coords, 18);
+        console.log('149 coords watch' + this.coords + ' Date: '+ Date());
         // Ajout d'un marqueur sur la nouvelle position
         circle(coords, { color: 'green', radius: 5 }).addTo(this.map);
-        tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(this.map);        
-       // circle(coords, { color: 'red', radius: 10 }).addTo(this.map);
+        tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(this.map);
+        // circle(coords, { color: 'red', radius: 10 }).addTo(this.map);        
       } else {
         const GeolocationPositionError = (position as PositionError);
         console.log('Error ' + GeolocationPositionError.code + ': ' + GeolocationPositionError.message);
       }
     });
-  }
-}
 
+    console.log('Sortie de watchPosition');
+  }
+  
+}
+console.log('Sortie de initMap');
