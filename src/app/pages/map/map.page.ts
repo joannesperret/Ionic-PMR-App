@@ -13,6 +13,7 @@ export class MapPage implements OnInit {
   public map: Map;
   public pmrRoubaix = { emplacements: [] };
   public pmrList = {};
+  public pmrListRoubaix = {};
   public pmrLocalisation = [];
   public souscription = this.geolocation.watchPosition();
   public subscription;
@@ -21,7 +22,7 @@ export class MapPage implements OnInit {
   // API paramétrée pour appel des 797 emplacements des emplacements PMR de Roubaix
   public UrlPmrRoubaix = 'https://opendata.lillemetropole.fr/api/records/1.0/search/?dataset=les-emplacements-de-stationnement-pmr-a-roubaix&q=&rows=797';
 
-  // API paramétrée pour appel des 1 575 emplacements PMR de Lille
+  // API paramétrée pour appel des 1 574 emplacements PMR de Lille
 
   public UrlPmrLille = 'https://opendata.lillemetropole.fr/api/records/1.0/search/?dataset=stationnements-reserves-a-lille&q=&rows=1574';
 
@@ -31,11 +32,16 @@ export class MapPage implements OnInit {
   }
 
   ngOnInit(): void {
+    // Test d'initialisation de la carte 
+    this.map = new Map('mapView');
+    // Initialisation de la liste des emplacements
+    this.pmrList = {};
     // Fonction d'appel de l' API de geolocalisation des emplacements PMR de Lille
     this.loadPmrPark(this.UrlPmrLille);
     // Fonction d'appel de l' API de geolocalisation des emplacements PMR de Roubaix
-    // this.loadPmrPark(this.UrlPmrRoubaix);
-    //.then( toast => toast.present());
+    this.loadPmrPark(this.UrlPmrRoubaix);
+    // .then( toast => toast.present());
+    // this.initMap(this.coords);
     
   }
 
@@ -50,45 +56,31 @@ export class MapPage implements OnInit {
       .subscribe(
         // fonction callback de succès
         (response: any) => {
-          // console.log(response);
+          console.log(response);
           this.pmrList = response.records;
+          // this.pmrList.push(response.records);
           console.log("Promesse");
           // boucle d'ajout de cercle sur chaque coordonnée d'emplacement PMR 
           //this.initMap(position.coords);             
-          for (let i = 0; i < 500; i++) {
+          let k = 0;
+          while (k < Object.keys(this.pmrList).length) {
             //circle([this.pmrList[i].fields.geo_point_2d],{color: 'blue', radius: 50}).addTo(this.map)
             //.bindPopup('<p>Emplacement PMR</p>');  
 
             //console.log([this.pmrList[i].fields.geo_point_2d]); 
-            this.pmrLocalisation.push(this.pmrList[i].fields.geo_point_2d);
+            // this.pmrLocalisation.push(this.pmrList[k].fields.geo_point_2d);
             // console.log(this.pmrLocalisation);
-            //  circle([this.pmrList[i].fields.geo_point_2d],{color: 'blue', radius: 50}).addTo(this.map)
-            // .bindPopup('<p>Emplacement PMR</p>');  
-
-            //Envoi d’un message pour indiquer la fin du chargement
+            // circle([this.pmrList[k].fields.geo_point_2d],{color: 'green', radius: 10}).addTo(this.map)
+            // .bindPopup('<p>Emplacement PMR</p>');             
+            k++;
           }
+          //Envoi d’un message pour indiquer la fin du chargement
           console.log("Résolue");
-          // test ajout timer sur initialisation carte
-          //  var temp = this;          
-          // var id = setTimeout(function(){
-           // temp.initMap(temp.coords); 
-          //    temp.initMap(temp.coords);
-          //    console.log('timeOut');
-          //    console.log('coords'+temp.coords)
-          // }, 1000);
-        // clearTimeout(id);
-                    
-         // setTimeout(this.test, 1000);
+         
          this.initMap(this.coords);
         
         }); 
-  }
-
-
-  // public test(){
-  //   setTimeout(this.test, 5000);
-  //   console.log('test');
-  // };
+  } 
 
   public ionViewDidEnter() {
     // this.geolocation.getCurrentPosition()
@@ -129,13 +121,13 @@ export class MapPage implements OnInit {
   public setEmplacement(){    
     console.log('Centrage de la carte');
     // Test suppression emplacement à chaque raffraîchissement
-    this.emplacement.remove;
+    // this.emplacement.remove;
     this.initMap;
   }
 
   public initMap(coords) {
     // Instanciation de la carte
-    this.map = new Map('mapView');
+    // this.map = new Map('mapView');
     // Deuxième paramètre correspond au zoom
     this.map.setView(coords, 17);
     tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(this.map);
@@ -153,7 +145,6 @@ export class MapPage implements OnInit {
 
     // Ajout sur la carte des emplacements PMR de l' API selectionnée
        
-    Object.keys(this.pmrList).length;
     console.log('Longueur tableau: '+ Object.keys(this.pmrList).length);
 
     let j = 0;
